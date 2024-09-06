@@ -18,9 +18,14 @@ module tb ();
   reg rst_n;
   reg [7:0] ui_in;
   wire [7:0] uo_out;
+  wire dwn_clk;
+  wire [5:0] data;
+
+  assign dwn_clk = uo_out[0];
+  assign data    = uo_out[7:2];
 
   // Replace tt_um_micro_test with your module name:
-  tt_um_micro_test user_project (
+  tt_um_micro_gfg_development_cic user_project (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST

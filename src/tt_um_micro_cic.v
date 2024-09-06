@@ -53,14 +53,14 @@ module tt_um_micro_gfg_development_cic (
 
   genvar i;
   generate
-    for (i = 0; i < STAGES; i = i + 1) begin
+    for (i = 0; i < STAGES; i = i + 1) begin : gen_integrator
       assign integrator_stage_out[i]     = integrator_stage_in[i] + integrator_stage_buffer[i];
     
-      if (i != 0) begin
+      if (i != 0) begin : gen_stage_connect
         assign integrator_stage_in[i]    = integrator_stage_out[i - 1];
-      end 
+      end
     end
-  endgenerate;
+  endgenerate
 
   always @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
@@ -79,6 +79,7 @@ module tt_um_micro_gfg_development_cic (
   always @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
       ctr                 <= 0;
+      downsample_clock    <= 1'b0;
     end else begin      
       if (ctr == DOWNSAMPLING / 2 - 1) begin
         ctr               <= 0;
@@ -97,14 +98,14 @@ module tt_um_micro_gfg_development_cic (
 
   genvar j;
   generate
-    for (j = 0; j < STAGES; j = j + 1) begin
+    for (j = 0; j < STAGES; j = j + 1) begin : gen_comb
       assign comb_stage_out[j]     = comb_stage_in[j] - comb_stage_buffer[j];
     
-      if (j != 0) begin
+      if (j != 0) begin : gen_stage_connect
         assign comb_stage_in[j]    = comb_stage_out[j - 1];
       end 
     end
-  endgenerate;
+  endgenerate
 
   always @(posedge downsample_clock or negedge rst_n) begin
     if (~rst_n) begin
@@ -121,7 +122,7 @@ module tt_um_micro_gfg_development_cic (
   end
 
   assign uo_out[0]                    = downsample_clock;
-  assign uo_out[1]                    = 1'b0;
+  assign uo_out[1]                    = clk;
   assign uo_out[7 : 7 - WIDTH_REGS]   = comb_stage_out[STAGES - 1][WIDTH_REGS - 1 : 0];
 
 endmodule  // tt_um_factory_test
