@@ -93,8 +93,18 @@ module tt_um_micro_gfg_development_cic (
   wire [WIDTH_REGS - 1 : 0] comb_stage_out    [0 : STAGES - 1];
   wire [WIDTH_REGS - 1 : 0] comb_stage_in     [0 : STAGES - 1];
   reg  [WIDTH_REGS - 1 : 0] comb_stage_buffer [0 : STAGES - 1];
+  reg  [WIDTH_REGS - 1 : 0] buffer;
 
-  assign comb_stage_in[0]          = integrator_stage_out[STAGES - 1];
+  always @(posedge downsample_clock or negedge rst_n) begin
+    if (~rst_n) begin
+      buffer                                <= 0;
+    end else begin
+      buffer                                <= integrator_stage_out[STAGES - 1];
+    end    
+  end
+
+
+  assign comb_stage_in[0]          = buffer;
 
   genvar j;
   generate
