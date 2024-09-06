@@ -65,7 +65,7 @@ module tt_um_micro_gfg_development_cic (
   always @(posedge clk or negedge rst_n) begin
     integer ii;
     for (ii = 0; ii < STAGES; ii = ii + 1) begin
-      if rst_n = 1'b0 begin
+      if (rst_n = 1'b0) begin
         integrator_stage_buffer[ii]       <= 0;
       end else begin
         integrator_stage_buffer[ii]       <= integrator_stage_out[ii];
@@ -74,7 +74,7 @@ module tt_um_micro_gfg_development_cic (
   end
 
   always @(posedge clk or negedge rst_n) begin
-    if rst_n = 1'b0 begin
+    if (rst_n = 1'b0) begin
       ctr                 <= 0;
     end else begin      
       if (ctr == DOWNSAMPLING / 2 - 1) begin
@@ -106,7 +106,7 @@ module tt_um_micro_gfg_development_cic (
   always @(posedge downsample_clock or negedge rst_n) begin
     integer jj;
     for (jj = 0; jj < STAGES; jj = jj + 1) begin
-      if rst_n = 1'b0 begin
+      if (rst_n = 1'b0) begin
         integrator_stage_buffer[ii]       <= 0;
       end else begin
         comb_stage_buffer[jj]             <= comb_stage_in[jj];
