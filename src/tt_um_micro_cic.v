@@ -36,13 +36,13 @@ module tt_um_micro_gfg_development_cic (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  parameter STAGES        = 4;
-  parameter DOWNSAMPLING  = 12;
-  parameter WIDTH_CTR     = 4;
+  parameter STAGES        = 2;
+  parameter DOWNSAMPLING  = 4;
+  parameter WIDTH_CTR     = 2;
 
   parameter WIDTH_REGS    = 1 + STAGES * WIDTH_CTR;
 
-  reg [WIDTH_CTR - 1 : 0]   ctr;
+  reg [WIDTH_CTR - 2 : 0]   ctr;
   reg                       downsample_clock;
 
   wire [WIDTH_REGS - 1 : 0] integrator_stage_out    [0 : STAGES - 1];
