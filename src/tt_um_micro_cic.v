@@ -36,7 +36,7 @@ module tt_um_micro_gfg_development_cic (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  parameter STAGES        = 3;
+  parameter STAGES        = 2;
   parameter DOWNSAMPLING  = 4;
   parameter WIDTH_CTR     = 2;
 
@@ -62,19 +62,27 @@ module tt_um_micro_gfg_development_cic (
     end
   endgenerate;
 
-  always @(posedge clk) begin
+  always @(posedge clk or negedge rst_n) begin
     integer ii;
     for (ii = 0; ii < STAGES; ii = ii + 1) begin
-      integrator_stage_buffer[ii]       <= integrator_stage_out[ii];
+      if rst_n = 1'b0 begin
+        integrator_stage_buffer[ii]       <= 0;
+      end else begin
+        integrator_stage_buffer[ii]       <= integrator_stage_out[ii];
+      end
     end
   end
 
-  always @(posedge clk) begin
-    if (ctr == DOWNSAMPLING / 2 - 1) begin
-      ctr               <= 0;
-      downsample_clock  <= ~downsample_clock;
-    end else begin
-      ctr <= ctr + 1;
+  always @(posedge clk or negedge rst_n) begin
+    if rst_n = 1'b0 begin
+      ctr                 <= 0;
+    end else begin      
+      if (ctr == DOWNSAMPLING / 2 - 1) begin
+        ctr               <= 0;
+        downsample_clock  <= ~downsample_clock;
+      end else begin
+        ctr <= ctr + 1;
+      end
     end
   end
 
@@ -95,14 +103,19 @@ module tt_um_micro_gfg_development_cic (
     end
   endgenerate;
 
-  always @(posedge downsample_clock) begin
+  always @(posedge downsample_clock or negedge rst_n) begin
     integer jj;
     for (jj = 0; jj < STAGES; jj = jj + 1) begin
-      comb_stage_buffer[jj]       <= comb_stage_in[jj];
+      if rst_n = 1'b0 begin
+        integrator_stage_buffer[ii]       <= 0;
+      end else begin
+        comb_stage_buffer[jj]             <= comb_stage_in[jj];
+      end
     end
   end
 
   assign uo_out[0]                    = downsample_clock;
-  assign uo_out[7 : 1]   = comb_stage_out[STAGES - 1][WIDTH_REGS - 1 : WIDTH_REGS - 7];
+  assign uo_out[1]                    = 1'b0;
+  assign uo_out[7 : 7 - WIDTH_REGS]   = comb_stage_out[STAGES - 1][WIDTH_REGS - 1 : 0];
 
 endmodule  // tt_um_factory_test
