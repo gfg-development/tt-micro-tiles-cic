@@ -89,7 +89,7 @@ module tt_um_micro_gfg_development_cic (
     for (j = 0; j < STAGES; j = j + 1) begin
       assign comb_stage_out[j]     = comb_stage_in[j] - comb_stage_buffer[j];
     
-      if (i != 0) begin
+      if (j != 0) begin
         assign comb_stage_in[j]    = comb_stage_out[j - 1];
       end 
     end
