@@ -103,6 +103,6 @@ module tt_um_micro_gfg_development_cic (
   end
 
   assign uo_out[0]      = downsample_clock;
-  assign uo_out[7 : 1]  = comb_stage_out[WIDTH_REGS - 1 : WIDTH_REGS - 7];
+  assign uo_out[7 : 1]  = comb_stage_out[STAGES - 1][WIDTH_REGS - 1 : WIDTH_REGS - 7];
 
 endmodule  // tt_um_factory_test
