@@ -49,7 +49,7 @@ module tt_um_micro_gfg_development_cic (
   wire [WIDTH_REGS - 1 : 0] integrator_stage_in     [0 : STAGES - 1];
   reg  [WIDTH_REGS - 1 : 0] integrator_stage_buffer [0 : STAGES - 1];
 
-  assign integrator_stage_in[0]          = {(WIDTH_REGS - 1){1'b0}, ui_in[0]};
+  assign integrator_stage_in[0]          = {{(WIDTH_REGS - 1){1'b0}}, ui_in[0]};
 
   genvar i;
   generate
