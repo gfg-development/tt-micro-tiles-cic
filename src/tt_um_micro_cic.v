@@ -36,7 +36,7 @@ module tt_um_micro_gfg_development_cic (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  parameter STAGES        = 2;
+  parameter STAGES        = 3;
   parameter DOWNSAMPLING  = 4;
   parameter WIDTH_CTR     = 2;
 
@@ -103,7 +103,6 @@ module tt_um_micro_gfg_development_cic (
   end
 
   assign uo_out[0]                    = downsample_clock;
-  assign uo_out[1]                    = 1'b0;
-  assign uo_out[7 : 7 - WIDTH_REGS]   = comb_stage_out[STAGES - 1][WIDTH_REGS - 1 : 0];
+  assign uo_out[7 : 1]   = comb_stage_out[STAGES - 1][WIDTH_REGS - 1 : WIDTH_REGS - 7];
 
 endmodule  // tt_um_factory_test
